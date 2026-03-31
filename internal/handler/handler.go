@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"wallet_api_service/internal/model"
-
 	"wallet_api_service/internal/service"
 
 	"github.com/google/uuid"
