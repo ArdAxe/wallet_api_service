@@ -8,17 +8,17 @@ import (
 )
 
 type WalletRepository struct {
-	db *sql.DB
+	Db *sql.DB
 }
 
 func New(db *sql.DB) *WalletRepository {
-	return &WalletRepository{db: db}
+	return &WalletRepository{Db: db}
 }
 
 func (r *WalletRepository) Deposit(ctx context.Context, id uuid.UUID, amount int64) (int64, error) {
 	var balance int64
 
-	err := r.db.QueryRowContext(ctx, `
+	err := r.Db.QueryRowContext(ctx, `
         UPDATE wallets
         SET balance = balance + $1
         WHERE id = $2
@@ -31,7 +31,7 @@ func (r *WalletRepository) Deposit(ctx context.Context, id uuid.UUID, amount int
 func (r *WalletRepository) Withdraw(ctx context.Context, id uuid.UUID, amount int64) (int64, error) {
 	var balance int64
 
-	err := r.db.QueryRowContext(ctx, `
+	err := r.Db.QueryRowContext(ctx, `
         UPDATE wallets
         SET balance = balance - $1
         WHERE id = $2 AND balance >= $1
@@ -47,7 +47,7 @@ func (r *WalletRepository) Withdraw(ctx context.Context, id uuid.UUID, amount in
 
 func (r *WalletRepository) GetBalance(ctx context.Context, id uuid.UUID) (int64, error) {
 	var balance int64
-	err := r.db.QueryRowContext(ctx,
+	err := r.Db.QueryRowContext(ctx,
 		`SELECT balance FROM wallets WHERE id=$1`, id).Scan(&balance)
 	return balance, err
 }
